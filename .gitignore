@@ -4,6 +4,8 @@ bin-int/
 */*.vcxproj
 */*.vcxproj.user
 */*.vcxproj.filters
+build/*
+CMakeUserPresets.json
 
 # P.S: I am aware that project structure is dirty, but that's going to change in the future.
 

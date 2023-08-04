@@ -1,0 +1,9 @@
+[requires]
+boost/1.82.0
+
+[layout]
+cmake_layout
+
+[generators]
+CMakeDeps
+CMakeToolchain
