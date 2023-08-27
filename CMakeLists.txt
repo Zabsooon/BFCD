@@ -6,20 +6,27 @@ set(
     ./src/Application.cpp
     ./src/File/File.cpp
     ./src/File/Reader.cpp
+    ./src/File/Compression/Huffman.cpp
+    ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.cpp
+    ./src/File/Compression/DataStructure/HuffmanTree/Node.cpp
 )
 
 set(
     BFCD_HEADERS
     ./src/File/File.hpp
     ./src/File/Reader.hpp
+    ./src/File/Compression/Huffman.hpp
+    ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.hpp
+    ./src/File/Compression/DataStructure/HuffmanTree/Node.hpp
 )
 
-find_package(Boost REQUIRED)
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS}) 
-    add_executable(${PROJECT_NAME} ${BFCD_SOURCES} ${BFCD_HEADERS})
-    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-endif()
+# find_package(Boost REQUIRED)
+# if(Boost_FOUND)
+    # include_directories(${Boost_INCLUDE_DIRS}) 
+    # add_executable(${PROJECT_NAME} ${BFCD_SOURCES} ${BFCD_HEADERS})
+    # target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+# endif()
 
-message(STATUS "Boost_FOUND: ${Boost_FOUND}")
+add_executable(${PROJECT_NAME} ${BFCD_SOURCES} ${BFCD_HEADERS})
 
+#message(STATUS "Boost_FOUND: ${Boost_FOUND}")

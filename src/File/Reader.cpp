@@ -23,10 +23,7 @@ void Reader::read()
     {
         std::string line;
         while(std::getline(file, line))
-        {
             m_File->m_Data.append(line);
-            
-        }
         file.close();
     }
     else

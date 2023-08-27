@@ -11,8 +11,8 @@ namespace BFCD
         typedef size_t bytes;
         friend class Reader;
 
-        File(const char* path);
-        File(std::string path, std::string data = "", bytes size = 0);
+        explicit File(const char* path);
+        explicit File(std::string path, std::string data = "", bytes size = 0);
         File(const File& rhs);
         File(File&& file) = default;
         File& operator=(const File& rhs);
@@ -20,6 +20,7 @@ namespace BFCD
         void print();
 
         inline std::string getPath() const { return m_Path; }
+        inline std::string getData() const { return m_Data; }
         
     private:
 

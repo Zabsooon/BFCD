@@ -3,8 +3,8 @@
 
 int main()
 {
-	BFCD::File file("/home/zabsooon/Dev/BFCD/TestFiles/TestFileOpen.txt");
-	BFCD::Reader reader(file); 
+	BFCD::File file("Z:/Dev/BFCD/TestFiles/TestFileOpen.txt");
+	BFCD::Reader reader(file);
 	// reader.open();
 	reader.read();
 	reader.getFile()->print();

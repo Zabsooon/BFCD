@@ -50,3 +50,28 @@ Now to run the project we just run the executable:
 ```
 ./BFCD
 ```
+
+---
+
+# Development:
+
+## Todo:
+
+- GUI (MICROUI or Dear ImGui),
+- Implement many compression algorithms(lossless and lossy)
+- Get rid of Boost Library, since it is not needed anymore ;)
+
+---
+
+## Problems/Bugs:
+
+- There's no problems that I know of for now :)
+
+---
+
+## Possibilities:
+
+There is a possibility of memory leak in: recursiveDestruction(Node *topNode) 
+in HuffmanTree class, because of:
+    
+    delete topNode;
