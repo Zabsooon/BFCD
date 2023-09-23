@@ -75,3 +75,11 @@ There is a possibility of memory leak in: recursiveDestruction(Node *topNode)
 in HuffmanTree class, because of:
     
     delete topNode;
+
+Consider storing character as a UNION, 
+since it can be in 2 different states:
+
+    Character state
+    Internal Node state
+
+    - For now the Internal Node state is being represented as 0/NULL

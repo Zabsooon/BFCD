@@ -40,9 +40,85 @@ template class BFCD::HuffmanTree<char>;
 // private functions:
 
 template<typename T>
-void HuffmanTree<T>::buildHuffmanTree()
+std::pair<char, unsigned int> HuffmanTree<T>::popMaximumOccurrence(std::unordered_map<char, unsigned int> &occurrences)
 {
+    auto pr = std::max_element(occurrences.begin(),
+                               occurrences.end(),
+                               [&](const auto &x, const auto &y)
+                               {
+                                   return x.second < y.second;
+                               });
 
+    char ret_c = pr->first;
+    unsigned int ret_v = pr->second;
+    occurrences.erase(pr->first);
+
+    return {ret_c, ret_v};
+}
+
+template<typename T>
+std::pair<char, unsigned int> HuffmanTree<T>::popMinimumOccurrence(std::unordered_map<char, unsigned int> &occurrences)
+{
+    auto pr = std::min_element(occurrences.begin(),
+                               occurrences.end(),
+                               [&](const auto &x, const auto &y)
+                               {
+                                   return x.second < y.second;
+                               });
+
+    char ret_c = pr->first;
+    unsigned int ret_v = pr->second;
+    occurrences.erase(pr->first);
+
+    return {ret_c, ret_v};
+}
+
+template<typename T>
+void HuffmanTree<T>::buildHuffmanTree(std::unordered_map<char, unsigned int> occurrences)
+{
+    if(this->m_TopNode == nullptr)
+        return;
+
+    std::queue<Node<T>*> minQueue;
+
+    while(!occurrences.empty())
+    {
+        std::pair<char, unsigned int> minElement = popMinimumOccurrence(occurrences);
+        Node<T> *minNode{minElement.first, minElement.second};
+        minQueue.push(minNode);
+        this->m_NodeQueue.push(minNode); // add node to queue of all nodes
+        if(minQueue.size() == 2)
+        {
+            Node<T> *a = minQueue.front();
+            minQueue.pop();
+            Node<T> *b = minQueue.front();
+            minQueue.pop();
+
+            Node<T> combineNode{0, (a->getFrequency() + b->getFrequency())};
+            combineNode.setBothNodes(a, b);
+            this->m_NodeQueue.push(combineNode);
+
+            // now we have to add the combineNode to the pool of nodes
+        }
+    }
+
+//    std::function<void(Node<T> *node)> recursiveTraversal;
+//
+//    recursiveTraversal = [&](Node<T> *node)
+//    {
+//        if(node->hasLeft())
+//        {
+//            this->m_NodeStack.push(node->getLeftNode());
+//            recursiveTraversal(node->getLeftNode());
+//        }
+//        if(node->hasRight())
+//        {
+//            this->m_NodeStack.push(node->getRightNode());
+//            recursiveTraversal(node->getLeftNode());
+//        }
+//    };
+//
+//    recursiveTraversal(this->m_TopNode);
 }
 
 template<typename T>

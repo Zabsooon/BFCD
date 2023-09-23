@@ -29,7 +29,7 @@ Huffman::Huffman(Huffman&& huffman) noexcept
 
 Huffman::~Huffman()
 {
-    cleanOccurences(this->m_Occurrences);
+    cleanOccurrences(this->m_Occurrences);
 }
 
 // Private functions:
@@ -56,8 +56,8 @@ void Huffman::setOccurrences(File* file)
     }
 }
 
-void Huffman::cleanOccurences(std::unordered_map<char, unsigned int>& occurences)
+void Huffman::cleanOccurrences(std::unordered_map<char, unsigned int>& occurrences)
 {
-    std::unordered_map<char, unsigned int> emptyOccurences;
-    std::swap(occurences, emptyOccurences);
+    std::unordered_map<char, unsigned int> emptyOccurrences;
+    std::swap(occurrences, emptyOccurrences);
 }

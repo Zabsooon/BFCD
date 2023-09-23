@@ -21,7 +21,7 @@ namespace BFCD
     private:
         void setOccurrences(File* file);
 
-        static void cleanOccurences(std::unordered_map<char, unsigned int>& occurences);
+        static void cleanOccurrences(std::unordered_map<char, unsigned int>& occurrences);
 
     private:
         std::unordered_map<char, unsigned int> m_Occurrences;

@@ -19,8 +19,8 @@ namespace BFCD
         File& operator=(File&& rhs) noexcept;
         void print();
 
-        inline std::string getPath() const { return m_Path; }
-        inline std::string getData() const { return m_Data; }
+        [[nodiscard]] inline std::string getPath() const { return m_Path; }
+        [[nodiscard]] inline std::string getData() const { return m_Data; }
         
     private:
 
@@ -28,7 +28,7 @@ namespace BFCD
         
     private:
         std::string m_Path;
-        std::string m_Data{ "" };
+        std::string m_Data;
         bytes m_Size{ 0 };
     };
 } // namespace BFCD 
