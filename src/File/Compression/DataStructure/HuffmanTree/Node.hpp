@@ -6,9 +6,8 @@ namespace BFCD
     class Node
     {
     public:
-        Node(char character, unsigned int frequency); // !Might not be usefull!
-        Node(char character, unsigned int frequency, bool code);
-        Node(char character, unsigned int frequency, bool code, Node<T>* leftNode, Node<T>* rightNode);
+        Node();
+        Node(char character = 0, unsigned int frequency = 0, Node<T>* leftNode = nullptr, Node<T>* rightNode = nullptr);
         Node(const Node<T>& node) = delete;
         Node(Node<T>&& node) noexcept;
         Node<T>& operator=(const Node<T>& node) = delete;
@@ -20,7 +19,6 @@ namespace BFCD
 
         [[nodiscard]] inline char getCharacter() const { return this->m_Character; };
         [[nodiscard]] inline unsigned int getFrequency() const { return this->m_Frequency; };
-        [[nodiscard]] inline unsigned int getCode() const { return this->m_Code; };
 
         inline Node<T>* getLeftNode() const { return this->m_LeftNode; };
         inline Node<T>* getRightNode() const { return this->m_RightNode; };
@@ -31,7 +29,6 @@ namespace BFCD
     private:
         T m_Character;
         unsigned int m_Frequency;
-        bool m_Code;
         Node<T> *m_LeftNode;
         Node<T> *m_RightNode;
     };

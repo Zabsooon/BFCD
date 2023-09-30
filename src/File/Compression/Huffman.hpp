@@ -19,12 +19,11 @@ namespace BFCD
         ~Huffman();
 
     private:
-        void setOccurrences(File* file);
-
-        static void cleanOccurrences(std::unordered_map<char, unsigned int>& occurrences);
+        template<typename T, typename U>
+        static void clearUMap(std::unordered_map<T, U> &umap);
 
     private:
-        std::unordered_map<char, unsigned int> m_Occurrences;
+        std::unordered_map<char, std::string> m_charCodes;
         HuffmanTree<char> m_HuffmanTree;
     };
 } // namespace: BFCD
