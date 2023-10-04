@@ -3,10 +3,9 @@
 
 int main()
 {
-	BFCD::File file("Z:/Dev/BFCD/TestFiles/TestFileOpen.txt");
-	BFCD::Reader reader(file);
-	// reader.open();
-	reader.read();
-	reader.getFile()->print();
+	BFCD::File file2("../TestFiles/TestFileOpen.txt");
+	BFCD::Reader reader2(file2);
+	reader2.readData();
+	reader2.getFile()->print();
 	return 0;
 }

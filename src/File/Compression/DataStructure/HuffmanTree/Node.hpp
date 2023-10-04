@@ -1,3 +1,5 @@
+#pragma once
+
 #include <utility>
 
 namespace BFCD
@@ -20,8 +22,8 @@ namespace BFCD
         [[nodiscard]] inline char getCharacter() const { return this->m_Character; };
         [[nodiscard]] inline unsigned int getFrequency() const { return this->m_Frequency; };
 
-        inline Node<T>* getLeftNode() const { return this->m_LeftNode; };
-        inline Node<T>* getRightNode() const { return this->m_RightNode; };
+        [[nodiscard]] inline Node<T>* getLeftNode() const { return this->m_LeftNode; };
+        [[nodiscard]] inline Node<T>* getRightNode() const { return this->m_RightNode; };
         inline void setLeftNode(Node<T>* node) { this->m_LeftNode = node; };
         inline void setRightNode(Node<T>* node) { this->m_RightNode = node; };
         void setBothNodes(Node<T>* leftNode, Node<T>* rightNode);

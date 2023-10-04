@@ -44,17 +44,10 @@ template<typename T>
 std::unordered_map<T, unsigned int>  HuffmanTree<T>::readOccurrences(File* file)
 {
     std::unordered_map<char, unsigned int> occurrences;
-    std::string data = file->getData();
 
-    for(char c : data)
-    {
-        auto found = std::find_if(
-            occurrences.begin(),
-            occurrences.end(),
-            [&c](const auto& p){ return p.second == c; });
-        
+    for(char c : file->getData())   
         occurrences[c]++;
-    }
+
     return occurrences;
 }
 
@@ -211,7 +204,7 @@ std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
 template<typename T>
 void HuffmanTree<T>::recursiveDestruction(Node<T> *topNode)
 {
-    if(topNode)
+    if(topNode->hasNext())
     {
         recursiveDestruction(topNode->getLeftNode());
         recursiveDestruction(topNode->getRightNode());
