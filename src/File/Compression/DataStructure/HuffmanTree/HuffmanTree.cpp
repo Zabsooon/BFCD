@@ -5,7 +5,9 @@ using namespace BFCD;
 template<typename T>
 HuffmanTree<T>::HuffmanTree(File *file)
 {
+    std::cout << "Construction of HuffmanTree\n";
     this->m_TopNode = buildHuffmanTree(file);
+    std::cout << "Construction of HuffmanTree after building\n";
 }
 
 template<typename T>
@@ -33,7 +35,9 @@ HuffmanTree<T>& HuffmanTree<T>::operator=(HuffmanTree<T>&& huffmanTree) noexcept
 template<typename T>
 HuffmanTree<T>::~HuffmanTree()
 {
+    std::cout << "Destruction HuffmanTree\n";
     recursiveDestruction(this->m_TopNode);
+    std::cout << "Destruction HuffmanTree after recursive destruct\n";
 }
 
 template class BFCD::HuffmanTree<char>;
@@ -204,6 +208,9 @@ std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
 template<typename T>
 void HuffmanTree<T>::recursiveDestruction(Node<T> *topNode)
 {
+    if(topNode == nullptr)
+        return;
+
     if(topNode->hasNext())
     {
         recursiveDestruction(topNode->getLeftNode());

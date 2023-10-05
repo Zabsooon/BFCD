@@ -65,7 +65,9 @@ Now to run the project we just run the executable:
 
 ## Problems/Bugs:
 
-- There's no problems that I know of for now :)
+- Destructor of HuffmanTree (member of Huffman) is called twice, however the constructor is never called.
+    this problem might be crucial in development of the app, since we might be destructing the same memory twice,
+    because there is a recursive destruction of our Huffman's tree. 
 
 ---
 
