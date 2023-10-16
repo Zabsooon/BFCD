@@ -18,6 +18,7 @@ namespace BFCD
         Reader(const File& file);
         Reader(File&& file);
         Reader(std::string path);
+        Reader(std::shared_ptr<File> file);
         
         inline std::shared_ptr<File> getFile() const { return m_File; }
         bool readData(); // returns true if file data was read successfully

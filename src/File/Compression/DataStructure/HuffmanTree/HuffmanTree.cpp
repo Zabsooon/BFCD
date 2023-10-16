@@ -6,7 +6,7 @@ template<typename T>
 HuffmanTree<T>::HuffmanTree(File *file)
 {
     std::cout << "Construction of HuffmanTree\n";
-    this->m_TopNode = buildHuffmanTree(file);
+    this->m_TopNode = std::make_shared<Node<T>>(buildHuffmanTree(file));
     std::cout << "Construction of HuffmanTree after building\n";
 }
 
@@ -47,24 +47,31 @@ template class BFCD::HuffmanTree<char>;
 template<typename T>
 std::unordered_map<T, unsigned int>  HuffmanTree<T>::readOccurrences(File* file)
 {
-    std::unordered_map<char, unsigned int> occurrences;
 
+    std::unordered_map<char, unsigned int> occurrences;
+    std::cout << "Read occurrences: before filling occurrences\n";
+    file->print();
     for(char c : file->getData())   
         occurrences[c]++;
-
+    std::cout << "Read occurrences: before returning occurrences\n";
     return occurrences;
 }
 
 template<typename T>
-std::vector<Node<T>*> HuffmanTree<T>::buildNodeVector(std::unordered_map<T, unsigned int> &occurrences)
+std::vector<Node<T>> HuffmanTree<T>::buildNodeVector(std::unordered_map<T, unsigned int> &occurrences)
 {
-    std::vector<Node<T>*> nodeVector;
+    std::vector<Node<T>> nodeVector;
+    std::cout << "Build Node Vector: before reserving size\n";
     nodeVector.reserve(occurrences.size());
+    std::cout << "Build Node Vector: before loop\n";
     for(auto it = occurrences.begin(); it != occurrences.end(); it++)
     {
-        Node<T>* node = new Node<T>(it->first, it->second);
+        std::cout << "Build Node Vector: inside loop before creating node\n";
+        Node<T> node(it->first, it->second);
+        std::cout << "Build Node Vector: inside loop before emplace_back()\n";
         nodeVector.emplace_back(node);
     }
+    std::cout << "Build Node Vector: before returning nodeVector\n";
     return nodeVector;
 }
 
@@ -105,77 +112,109 @@ std::pair<char, unsigned int> HuffmanTree<T>::popMinimumOccurrence(std::unordere
 template<typename T>
 Node<T>* HuffmanTree<T>::popMaximumNode(std::vector<Node<T>*> &nodeVector)
 {
+    unsigned int counter = 0;
     auto pr = std::max_element(nodeVector.begin(),
                                 nodeVector.end(),
                                 [&](const auto &x, const auto &y)
                                 {
+                                    counter++;
                                     return x->getFrequency() < y->getFrequency();
                                 });
+    nodeVector.erase(nodeVector.begin() + counter);
     return *pr;
 }
 
 template<typename T>
-Node<T>* HuffmanTree<T>::popMinimumNode(std::vector<Node<T>*> &nodeVector)
+Node<T> HuffmanTree<T>::popMinimumNode(std::vector<Node<T>> &nodeVector)
 {
-    auto pr = std::min_element(nodeVector.begin(),
-                                nodeVector.end(),
-                                [&](const auto &x, const auto &y)
-                                {
-                                    return x->getFrequency() < y->getFrequency();
-                                });
-    return *pr;
+    unsigned int counter = 0;
+    std::cout << "Inside PopMinimumNode: Before declaring getMinimum Element\n";
+    auto getMinimumElement = [&](std::vector<Node<T>> &nVector)
+    {
+        std::cout << "nVector.size(): " << nVector.size() << "\n";
+        std::cout << "Before assigning smallestNode";
+        Node<T> smallestNode = *nVector.begin();
+        std::cout << "Character: " << smallestNode.getCharacter() << ", frequency: " << smallestNode.getFrequency() << "\n";
+        std::cout << "Before nVector loop";
+        for(auto it = nVector.begin(); it != nVector.end(); it++, counter++)
+        {
+            std::cout << "inside loop\n";
+            if((*it).getFrequency() < smallestNode.getFrequency())
+            {
+                std::cout << "(*it)'s character: " << (*it).getCharacter() << "(*it)" << (*it).getFrequency() << "\n";
+                smallestNode = *it;
+            }
+            std::cout << "nodeVector.at(" << counter << ") character:" << nodeVector.at(counter).getCharacter() << ", frequency: " << nodeVector.at(counter).getFrequency() << "\n";
+            std::cout << "nodeVector iterator character: " << (*it).getCharacter() << ", frequency: " << (*it).getFrequency() << "\n";
+        }
+        std::cout << "popMinimumNode: before return smallestNode\n";
+        nodeVector.erase(nodeVector.begin() + counter);
+        return smallestNode;
+    };
+    std::cout << "popMinmumNode: before getMinimumElement call\n";
+    Node<T> minNode = getMinimumElement(nodeVector);
+    std::cout << "popMinimumNode: before return minNode\n";
+    return minNode;
 }
 
 template<typename T>
-Node<T>* HuffmanTree<T>::buildHuffmanTree(File* file)
+Node<T> HuffmanTree<T>::buildHuffmanTree(File* file)
 {
+    std::cout << "1\n";
     std::unordered_map<T, unsigned int> occurrences = readOccurrences(file);
-    std::vector<Node<T>*> nodeVector = buildNodeVector(occurrences);
+    std::cout << "1\n";
+    std::vector<Node<T>> nodeVector = buildNodeVector(occurrences);
+    std::cout << "1\n";
 
     while(nodeVector.size() > 1)
     {
-        Node<T> *minNodeLeft = popMinimumNode(nodeVector);
-        Node<T> *minNodeRight = popMinimumNode(nodeVector);
-        Node<T> *combinedNode = new Node(0, 
-                                minNodeLeft->getFrequency() + minNodeRight->getFrequency(),
-                                minNodeLeft,
-                                minNodeRight);
-        
+        std::cout << "2\n";
+        std::cout << "NodeVector size: " << nodeVector.size() << "\n";
+        Node<T> minNodeLeft = popMinimumNode(nodeVector);
+        std::cout << "MinNodeLeft character: " << minNodeLeft.getCharacter() << ", occurrences:" << minNodeLeft.getFrequency() << "\n";
+        Node<T> minNodeRight = popMinimumNode(nodeVector);
+        std::cout << "MinNodeRight character: " << minNodeRight.getCharacter() << ", occurrences:" << minNodeRight.getFrequency() << "\n";
+        std::shared_ptr<Node<T>> combinedNode = std::make_shared<Node<T>>(0,
+                            minNodeLeft.getFrequency() + minNodeRight.getFrequency(),
+                            std::make_shared<Node<T>>(minNodeLeft),
+                            std::make_shared<Node<T>>(minNodeRight));
+        std::cout << "CombinedNode character: " << combinedNode->getCharacter() << ", occurrences: " << combinedNode->getFrequency() << "\n";
         nodeVector.emplace_back(combinedNode);
+        std::cout << "After emplace_back\n";
     }
-
+    std::cout << "3\n";
     return popMinimumNode(nodeVector);
 }
 
 template<typename T>
 void HuffmanTree<T>::buildHuffmanTree(std::unordered_map<char, unsigned int> &occurrences)
 {
-    std::vector<Node<T>*> nodeVector = buildNodeVector(occurrences);
+    std::vector<Node<T>> nodeVector = buildNodeVector(occurrences);
     
     while(nodeVector.size() > 1)
     {
-        Node<T> *minNodeLeft = popMinimumNode(nodeVector);
-        Node<T> *minNodeRight = popMinimumNode(nodeVector);
-        Node<T> *combinedNode = new Node(0,
-                                minNodeLeft->getFrequency() + minNodeRight->getFrequency(),
-                                minNodeLeft,
-                                minNodeRight);
+        Node<T> minNodeLeft = popMinimumNode(nodeVector);
+        Node<T> minNodeRight = popMinimumNode(nodeVector);
+        Node<T> combinedNode(0,
+                            minNodeLeft.getFrequency() + minNodeRight.getFrequency(),
+                            std::make_shared<Node<T>>(minNodeLeft),
+                            std::make_shared<Node<T>>(minNodeRight));
         
         nodeVector.emplace_back(combinedNode);
     }
 
-    this->m_TopNode = popMinimumNode(nodeVector);
+    this->m_TopNode = std::make_unique<Node<T>>(popMinimumNode(nodeVector));
 }
 
 template<typename T>
 std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
 {
     std::unordered_map<T, std::string> charCodes;
-    std::function<void(Node<T> *node)> recursiveTraversal;
+    std::function<void(std::shared_ptr<Node<T>> node)> recursiveTraversal;
     std::vector<char> codeStackVec; // the only reason that we use vector instead of stack are iterators 
     codeStackVec.reserve(255);
 
-    recursiveTraversal = [&](Node<T> *node)
+    recursiveTraversal = [&](std::shared_ptr<Node<T>> node)
     {
         if(!node->hasNext())
         {
@@ -199,14 +238,14 @@ std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
         recursiveTraversal(node->getRightNode());
         codeStackVec.pop_back();
     };
-    Node<T> *topNode = this->m_TopNode;
+    std::shared_ptr<Node<T>> topNode = this->m_TopNode;
     recursiveTraversal(topNode);
     
     return charCodes;
 }
 
 template<typename T>
-void HuffmanTree<T>::recursiveDestruction(Node<T> *topNode)
+void HuffmanTree<T>::recursiveDestruction(std::shared_ptr<Node<T>> topNode)
 {
     if(topNode == nullptr)
         return;
@@ -216,13 +255,13 @@ void HuffmanTree<T>::recursiveDestruction(Node<T> *topNode)
         recursiveDestruction(topNode->getLeftNode());
         recursiveDestruction(topNode->getRightNode());
     }
-    delete topNode;
+    // delete topNode;
 }
 
 template<typename T>
-void HuffmanTree<T>::clearQueue(std::queue<Node<T> *> &queue)
+void HuffmanTree<T>::clearQueue(std::queue<Node<T>> &queue)
 {
-    std::queue<Node<T> *> emptyQueue;
+    std::queue<Node<T>> emptyQueue;
     std::swap(queue, emptyQueue);
 }
 

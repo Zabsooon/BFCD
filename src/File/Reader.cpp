@@ -16,6 +16,10 @@ Reader::Reader(File&& file)
     : m_File(std::make_shared<File>(std::move(file)))
 {}
 
+Reader::Reader(std::shared_ptr<File> file)
+    : m_File(file)
+{}
+
 // void Reader::read()
 // {
 //     std::ifstream file = std::ifstream(m_File->m_Path);
