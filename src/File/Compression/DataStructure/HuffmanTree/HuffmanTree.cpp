@@ -140,22 +140,11 @@ template<typename T>
 std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
 {
     std::unordered_map<T, std::string> charCodes;
-    std::function<void(std::shared_ptr<Node<T>> node, std::string code)> recursiveTraversal;
-    // std::function<std::string(std::vector<char> &cStackVec)> countCode;
-    // std::vector<char> codeStackVec; // the only reason that we use vector instead of stack are iterators
-    // codeStackVec.reserve(255);
+    std::function<void(std::shared_ptr<Node<T>> node, const std::string& code)> recursiveTraversal;
 
-    // countCode = [&](std::vector<char> &cStackVec)
-    // {
-    //     std::string code;
-    //     for(auto it = cStackVec.rbegin(); it != cStackVec.rend(); ++it)
-    //     {
-    //         code += (*it);
-    //     }
-    //     return code;
-    // };
+    charCodes.reserve(256);
 
-    recursiveTraversal = [&](std::shared_ptr<Node<T>> node, std::string code)
+    recursiveTraversal = [&](std::shared_ptr<Node<T>> node, const std::string& code)
     {
         if(!node->hasNext())
         {
