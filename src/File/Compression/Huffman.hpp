@@ -18,14 +18,9 @@ namespace BFCD
         Huffman& operator=(Huffman&& huffman) noexcept;
         Huffman(const Huffman& huffman) = delete;
         Huffman(Huffman&& huffman) noexcept;
-        ~Huffman();
+        ~Huffman() = default;
 
     private:
-        template<typename T, typename U>
-        static void clearUMap(std::unordered_map<T, U> &umap);
-
-    private:
-        std::unordered_map<char, std::string> m_charCodes;
         HuffmanTree<char> m_HuffmanTree;
     };
 } // namespace: BFCD

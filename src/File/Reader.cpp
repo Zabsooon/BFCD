@@ -20,22 +20,6 @@ Reader::Reader(std::shared_ptr<File> file)
     : m_File(file)
 {}
 
-// void Reader::read()
-// {
-//     std::ifstream file = std::ifstream(m_File->m_Path);
-//     if(file.is_open())
-//     {
-//         std::string line;
-//         while(std::getline(file, line))
-//             m_File->m_Data.append(line);
-//         file.close();
-//     }
-//     else
-//     {
-//         std::cout << "Could not open the file!" << std::endl;
-//     }
-// }
-
 bool Reader::readData()
 {
     std::ifstream fs(this->m_File->getPath());

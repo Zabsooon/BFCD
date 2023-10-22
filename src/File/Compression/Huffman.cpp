@@ -6,7 +6,6 @@ using namespace BFCD;
 Huffman::Huffman()
 {
     std::cout << "Construction of Huffman.\n";
-    m_charCodes = std::unordered_map<char, std::string>();
     this->m_HuffmanTree = std::move(HuffmanTree<char>());
 }
 
@@ -22,21 +21,6 @@ Huffman& Huffman::operator=(Huffman&& huffman) noexcept
 }
 
 Huffman::Huffman(Huffman&& huffman) noexcept
-    : m_charCodes(std::move(huffman.m_charCodes)),
-    m_HuffmanTree(std::move(huffman.m_HuffmanTree))
+    : m_HuffmanTree(std::move(huffman.m_HuffmanTree))
 {}
 
-Huffman::~Huffman()
-{
-    std::cout << "Destroying Huffman...\n";
-    clearUMap(this->m_charCodes);
-    std::cout << "Destroying after clearing UMap.\n";
-}
-
-template<typename T, typename U>
-void Huffman::clearUMap(std::unordered_map<T, U> &umap)
-{
-    std::unordered_map<T, U> emptyMap;
-    std::swap(umap, emptyMap);
-    std::cout << "Clearing UMap\n";
-}

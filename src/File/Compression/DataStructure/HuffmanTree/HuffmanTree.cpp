@@ -6,29 +6,34 @@ template<typename T>
 HuffmanTree<T>::HuffmanTree(File *file)
 {
     this->m_TopNode = buildHuffmanTree(file);
+    this->m_CharCodes = generateCharCodes();
     std::cout << "PRINTER: \n";
     recursivePrint(this->m_TopNode);
+    printCharCodes(this->m_CharCodes);
 }
 
 template<typename T>
-HuffmanTree<T>::HuffmanTree(Node<T>* topNode)
+HuffmanTree<T>::HuffmanTree(std::shared_ptr<Node<T>> topNode)
     : m_TopNode(topNode)
 {}
 
 template<typename T>
 HuffmanTree<T>::HuffmanTree(const HuffmanTree& huffmanTree)
-    : m_TopNode(huffmanTree.m_TopNode)
+    : m_TopNode(huffmanTree.m_TopNode),
+    m_CharCodes(huffmanTree.m_CharCodes)
 {}
 
 template<typename T>
 HuffmanTree<T>::HuffmanTree(HuffmanTree&& huffmanTree) noexcept
-    : m_TopNode(std::move(huffmanTree.m_TopNode))
+    : m_TopNode(std::move(huffmanTree.m_TopNode)),
+    m_CharCodes(std::move(huffmanTree.m_CharCodes))
 {}
 
 template<typename T>
 HuffmanTree<T>& HuffmanTree<T>::operator=(HuffmanTree<T>&& huffmanTree) noexcept
 {
     this->m_TopNode = std::move(huffmanTree.m_TopNode);
+    this->m_CharCodes = std::move(huffmanTree.m_CharCodes);
     return *this;
 }
 
@@ -36,6 +41,9 @@ template<typename T>
 HuffmanTree<T>::~HuffmanTree()
 {
     recursiveDestruction(this->m_TopNode);
+    std::cout << "Pre clear \n";
+    clearUMap(m_CharCodes);
+    std::cout << "Post clear \n";
 }
 
 template class BFCD::HuffmanTree<char>;
@@ -65,55 +73,6 @@ std::vector<std::shared_ptr<Node<T>>> HuffmanTree<T>::buildNodeVector(std::unord
     }
 
     return nodeVector;
-}
-
-template<typename T>
-std::pair<char, unsigned int> HuffmanTree<T>::popMaximumOccurrence(std::unordered_map<char, unsigned int> &occurrences)
-{
-    auto pr = std::max_element(occurrences.begin(),
-                               occurrences.end(),
-                               [&](const auto &x, const auto &y)
-                               {
-                                   return x.second < y.second;
-                               });
-
-    char ret_c = pr->first;
-    unsigned int ret_v = pr->second;
-    occurrences.erase(pr->first);
-
-    return {ret_c, ret_v};
-}
-
-template<typename T>
-std::pair<char, unsigned int> HuffmanTree<T>::popMinimumOccurrence(std::unordered_map<char, unsigned int> &occurrences)
-{
-    auto pr = std::min_element(occurrences.begin(),
-                               occurrences.end(),
-                               [&](const auto &x, const auto &y)
-                               {
-                                   return x.second < y.second;
-                               });
-
-    char ret_c = pr->first;
-    unsigned int ret_v = pr->second;
-    occurrences.erase(pr->first);
-
-    return {ret_c, ret_v};
-}
-
-template<typename T>
-Node<T>* HuffmanTree<T>::popMaximumNode(std::vector<Node<T>*> &nodeVector)
-{
-    unsigned int counter = 0;
-    auto pr = std::max_element(nodeVector.begin(),
-                                nodeVector.end(),
-                                [&](const auto &x, const auto &y)
-                                {
-                                    counter++;
-                                    return x->getFrequency() < y->getFrequency();
-                                });
-    nodeVector.erase(nodeVector.begin() + counter);
-    return *pr;
 }
 
 template<typename T>
@@ -181,37 +140,40 @@ template<typename T>
 std::unordered_map<T, std::string> HuffmanTree<T>::generateCharCodes()
 {
     std::unordered_map<T, std::string> charCodes;
-    std::function<void(std::shared_ptr<Node<T>> node)> recursiveTraversal;
-    std::vector<char> codeStackVec; // the only reason that we use vector instead of stack are iterators 
-    codeStackVec.reserve(255);
+    std::function<void(std::shared_ptr<Node<T>> node, std::string code)> recursiveTraversal;
+    // std::function<std::string(std::vector<char> &cStackVec)> countCode;
+    // std::vector<char> codeStackVec; // the only reason that we use vector instead of stack are iterators
+    // codeStackVec.reserve(255);
 
-    recursiveTraversal = [&](std::shared_ptr<Node<T>> node)
+    // countCode = [&](std::vector<char> &cStackVec)
+    // {
+    //     std::string code;
+    //     for(auto it = cStackVec.rbegin(); it != cStackVec.rend(); ++it)
+    //     {
+    //         code += (*it);
+    //     }
+    //     return code;
+    // };
+
+    recursiveTraversal = [&](std::shared_ptr<Node<T>> node, std::string code)
     {
         if(!node->hasNext())
         {
-            auto countCode = [&](std::vector<char> &cStackVec)
-            {
-                std::string code;
-                for(auto it = cStackVec.rbegin(); it != cStackVec.rend(); ++it)
-                {
-                    code += (*it);
-                }
-                return code;
-            };
-            charCodes[node->getCharacter()] = countCode(codeStackVec);
+            charCodes[node->getCharacter()] = code;
         }
-        
-        codeStackVec.emplace_back('0');
-        recursiveTraversal(node->getLeftNode());
-        codeStackVec.pop_back();
-        
-        codeStackVec.emplace_back('1');
-        recursiveTraversal(node->getRightNode());
-        codeStackVec.pop_back();
+        if(node->getLeftNode())
+        {
+            recursiveTraversal(node->getLeftNode(), code + "0");
+        }
+        if(node->getRightNode())
+        {
+            recursiveTraversal(node->getRightNode(), code + "1");
+        }
     };
+
     std::shared_ptr<Node<T>> topNode = this->m_TopNode;
-    recursiveTraversal(topNode);
-    
+    recursiveTraversal(topNode, "");
+
     return charCodes;
 }
 
@@ -229,6 +191,15 @@ void HuffmanTree<T>::recursivePrint(std::shared_ptr<Node<T>> topNode)
     {
         recursivePrint(topNode->getLeftNode());
         recursivePrint(topNode->getRightNode());
+    }
+}
+
+template<typename T>
+void HuffmanTree<T>::printCharCodes(std::unordered_map<char, std::string> charCodes)
+{
+    for(auto [Key, Value] : charCodes)
+    {
+        std::cout << "Key: " << Key << ", Value: " << Value << "\n";
     }
 }
 
@@ -254,8 +225,9 @@ void HuffmanTree<T>::clearQueue(std::queue<Node<T>> &queue)
 }
 
 template<typename T>
-void HuffmanTree<T>::clearUMap(std::unordered_map<T, unsigned int> &umap)
+template<typename KeyType, typename ValueType>
+void HuffmanTree<T>::clearUMap(std::unordered_map<KeyType, ValueType> &umap)
 {
-    std::unordered_map<T, unsigned int> emptyUMap;
+    std::unordered_map<KeyType, ValueType> emptyUMap;
     std::swap(umap, emptyUMap);
 }
