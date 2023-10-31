@@ -11,10 +11,10 @@ namespace BFCD
     class Reader
     {
     public:
-        Reader& operator=(const Reader&) = delete;
-        Reader& operator=(Reader&&) = delete;
-        Reader(const Reader&) = delete;
-        Reader(Reader&&) = delete;
+        Reader& operator=(const Reader& reader);
+        Reader& operator=(Reader&& reader) noexcept;
+        Reader(const Reader& reader);
+        Reader(Reader&& reader) noexcept;
         Reader(const File& file);
         Reader(File&& file);
         Reader(std::string path);

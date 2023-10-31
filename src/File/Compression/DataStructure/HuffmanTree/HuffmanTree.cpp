@@ -7,9 +7,6 @@ HuffmanTree<T>::HuffmanTree(File *file)
 {
     this->m_TopNode = buildHuffmanTree(file);
     this->m_CharCodes = generateCharCodes();
-    std::cout << "PRINTER: \n";
-    recursivePrint(this->m_TopNode);
-    printCharCodes(this->m_CharCodes);
 }
 
 template<typename T>
@@ -53,9 +50,7 @@ template class BFCD::HuffmanTree<char>;
 template<typename T>
 std::unordered_map<T, unsigned int>  HuffmanTree<T>::readOccurrences(File* file)
 {
-
     std::unordered_map<char, unsigned int> occurrences;
-    file->print();
     for(char c : file->getData())   
         occurrences[c]++;
     return occurrences;

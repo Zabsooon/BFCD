@@ -2,11 +2,25 @@
 
 using namespace BFCD;
 
-Reader::Reader(std::string path)
+Reader& Reader::operator=(const Reader& reader)
 {
-    m_File->m_Path = path;
-    m_File->setSize();
+    this->m_File = reader.m_File;
+    return *this;
 }
+
+Reader& Reader::operator=(Reader&& reader) noexcept
+{
+    this->m_File = std::move(reader.m_File);
+    return *this;
+}
+
+Reader::Reader(const Reader& reader)
+    : m_File(reader.m_File)
+{}
+
+Reader::Reader(Reader&& reader) noexcept
+    : m_File(std::move(reader.m_File))
+{}
 
 Reader::Reader(const File& file)
     : m_File(std::make_shared<File>(file))
@@ -15,6 +29,12 @@ Reader::Reader(const File& file)
 Reader::Reader(File&& file)
     : m_File(std::make_shared<File>(std::move(file)))
 {}
+
+Reader::Reader(std::string path)
+{
+    m_File->m_Path = path;
+    m_File->setSize();
+}
 
 Reader::Reader(std::shared_ptr<File> file)
     : m_File(file)

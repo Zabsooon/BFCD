@@ -65,23 +65,7 @@ Now to run the project we just run the executable:
 
 ## Problems/Bugs:
 
-- Destructor of HuffmanTree (member of Huffman) is called twice, however the constructor is never called.
-    this problem might be crucial in development of the app, since we might be destructing the same memory twice,
-    because there is a recursive destruction of our Huffman's tree. 
-
 ---
 
 ## Possibilities:
 
-There is a possibility of memory leak in: recursiveDestruction(Node *topNode) 
-in HuffmanTree class, because of:
-    
-    delete topNode;
-
-Consider storing character as a UNION, 
-since it can be in 2 different states:
-
-    Character state
-    Internal Node state
-
-    - For now the Internal Node state is being represented as 0/NULL

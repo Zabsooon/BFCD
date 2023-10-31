@@ -6,6 +6,7 @@ set(
     ./src/Application.cpp
     ./src/File/File.cpp
     ./src/File/Reader.cpp
+    ./src/File/Writer.cpp
     ./src/File/Compression/Huffman.cpp
     ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.cpp
     ./src/File/Compression/DataStructure/HuffmanTree/Node.cpp
@@ -15,6 +16,7 @@ set(
     BFCD_HEADERS
     ./src/File/File.hpp
     ./src/File/Reader.hpp
+    ./src/File/Writer.hpp
     ./src/File/Compression/Huffman.hpp
     ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.hpp
     ./src/File/Compression/DataStructure/HuffmanTree/Node.hpp

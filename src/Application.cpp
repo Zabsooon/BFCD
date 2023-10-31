@@ -13,6 +13,12 @@ int main()
 	{
 		BFCD::Huffman huffman(&file);
 	}
+	auto data = file.getData();
+
+	for(auto d : data)
+	{
+		std::cout << d;
+	}
 
 	return 0;
 }

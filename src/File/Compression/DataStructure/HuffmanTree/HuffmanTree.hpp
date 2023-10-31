@@ -23,6 +23,8 @@ namespace BFCD
         HuffmanTree<T>& operator=(HuffmanTree&& huffmanTree) noexcept;
         ~HuffmanTree();
 
+        inline std::unordered_map<char, std::string> getCharCodes() const { return this->m_CharCodes; }
+
     private:
 	
 	static std::unordered_map<T, unsigned int> readOccurrences(File* file); // returns occurrences of characters
