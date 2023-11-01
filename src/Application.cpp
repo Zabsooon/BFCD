@@ -1,24 +1,18 @@
-#include "File/Reader.hpp"
 #include "File/File.hpp"
+#include "File/FileHandler.hpp"
 #include "File/Compression/Huffman.hpp"
 
 int main()
 {
-	BFCD::File file("../TestFiles/TestFileOpen.txt");
-	BFCD::Reader reader(std::make_shared<BFCD::File>(file));
-	reader.readData(&file);
-	reader.getFile()->print();
-	file.print();
+    BFCD::FileHandler handle("../TestFiles/TestFileOpen.txt");
 
-	{
-		BFCD::Huffman huffman(&file);
-	}
-	auto data = file.getData();
+    std::cout << (*handle.getFilePtr()).getPath() << "\n";
 
-	for(auto d : data)
-	{
-		std::cout << d;
-	}
+    for(char c : handle.getFilePtr()->getData())
+    {
+        std::cout << c;
+    }
 
+    BFCD::Huffman huffman(handle.getFilePtr());
 	return 0;
 }

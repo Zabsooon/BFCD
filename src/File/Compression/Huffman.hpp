@@ -5,8 +5,6 @@
 #include <algorithm>
 
 #include "../File.hpp"
-#include "../Writer.hpp"
-#include "../Reader.hpp"
 #include "./DataStructure/HuffmanTree/HuffmanTree.hpp"
 
 namespace BFCD
@@ -16,6 +14,7 @@ namespace BFCD
     public:
         Huffman();
         explicit Huffman(File* file);
+        Huffman(std::string& filePath);
         Huffman& operator=(const Huffman& huffman) = delete;
         Huffman& operator=(Huffman&& huffman) noexcept;
         Huffman(const Huffman& huffman) = delete;
@@ -26,7 +25,5 @@ namespace BFCD
 
     private:
         HuffmanTree<char> m_HuffmanTree;
-        Reader m_Reader;
-        Writer m_Writer;
     };
 } // namespace: BFCD

@@ -14,6 +14,12 @@ Huffman::Huffman(File* file)
     this->m_HuffmanTree = std::move(HuffmanTree<char>(file));
 }
 
+Huffman::Huffman(std::string& filePath)
+{
+    File* file = new File(filePath);
+    this->m_HuffmanTree = std::move(HuffmanTree<char>(file));
+}
+
 Huffman& Huffman::operator=(Huffman&& huffman) noexcept
 {
     this->m_HuffmanTree = std::move(huffman.m_HuffmanTree);

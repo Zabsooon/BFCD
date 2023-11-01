@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
+set(CMAKE_BUILD_TYPE Debug)
 project(BFCD VERSION 0.0.1)
 
 set(
     BFCD_SOURCES
     ./src/Application.cpp
     ./src/File/File.cpp
-    ./src/File/Reader.cpp
-    ./src/File/Writer.cpp
+    ./src/File/FileHandler.cpp
     ./src/File/Compression/Huffman.cpp
     ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.cpp
     ./src/File/Compression/DataStructure/HuffmanTree/Node.cpp
@@ -15,8 +15,7 @@ set(
 set(
     BFCD_HEADERS
     ./src/File/File.hpp
-    ./src/File/Reader.hpp
-    ./src/File/Writer.hpp
+    ./src/File/FileHandler.hpp
     ./src/File/Compression/Huffman.hpp
     ./src/File/Compression/DataStructure/HuffmanTree/HuffmanTree.hpp
     ./src/File/Compression/DataStructure/HuffmanTree/Node.hpp

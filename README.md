@@ -55,6 +55,10 @@ Now to run the project we just run the executable:
 
 # Development:
 
+Commits that are starting with "BIB" (Building Is Burning)
+simply means that I couldn't finish something and 
+I wanted to work on it on a different computer
+
 ## Todo:
 
 - GUI (MICROUI or Dear ImGui),

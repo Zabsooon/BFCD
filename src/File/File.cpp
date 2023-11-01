@@ -8,6 +8,12 @@ File::File(const char* path)
     setSize();
 }
 
+File::File(const std::string& path)
+    : m_Path(path)
+{
+    setSize();
+}
+
 File::File(std::string path, std::vector<char> data, bytes size)
     : m_Path(path), m_Data(data), m_Size(size)
 {}

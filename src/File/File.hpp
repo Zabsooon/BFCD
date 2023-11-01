@@ -14,6 +14,7 @@ namespace BFCD
         friend class Reader;
 
         explicit File(const char* path);
+        explicit File(const std::string& path);
         explicit File(std::string path, std::vector<char> data, bytes size = 0);
         File(const File& rhs);
         File(File&& file) = default;
@@ -27,9 +28,7 @@ namespace BFCD
         void setPath(std::string path) { this->m_Path = path; }
         void setData(std::vector<char> data) { this->m_Data = data; }
         void setData(const char* data); // make std::vector<char>       ! needs m_Size !
-
-    private:
-        void setSize();
+		void setSize();
         
     private:
         std::string m_Path;
